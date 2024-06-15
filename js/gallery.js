@@ -65,12 +65,12 @@ const images = [
 ];
 
 const galeryElem = document.querySelector(".gallery");
-
-function imegeTemplane(image) {
+//*==================================================================
+function imegeTemplane({ original, preview, description } = image) {
   return `<li class="gallery-item">
-   <a class="gallery-link" href="#">
-    <img class="gallery-image" src="${image.preview}"
-    data-source="${image.original}" alt="${image.description}"
+   <a class="gallery-link" href="${original}">
+    <img class="gallery-image" src="${preview}"
+    data-source="${original}" alt="${description}"
    />
   </a>
  </li>`;
@@ -82,21 +82,22 @@ function imegesTemplane(obj) {
 
 const markup = imegesTemplane(images);
 galeryElem.innerHTML = markup;
+//*==================================================================
 
 galeryElem.addEventListener("click", (e) => {
-  if (e.target === e.currentTarget) return;
-  // const imageElem = document.querySelector(".gallery-item");
-  const liElem = e.target.closest("li");
-  console.log(liElem);
-  modelOpen();
+  e.preventDefault();
 
-  //   console.log(e.target.dataset.source);
+  if (e.target === e.currentTarget) return;
+
+  const itemElem = e.target.closest("img");
+  modelOpen(itemElem);
 });
 
-function modelOpen() {
+//*==================================================================
+
+function modelOpen(item) {
   const instance = basicLightbox.create(`
-	<h1>Dynamic Content</h1>
-	<p>You can set the content of the lightbox with JS.</p>
+    <img src="${item.dataset.source}" width="1100" height="640">
 `);
   instance.show();
 }
